@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "9851c559-bfba-4ea4-8291-fca7168092f0",
+		"name": "Test with Selenium",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20038563"
+	},
+	"item": [
+		{
+			"name": "Local test",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \"url\": \"https://www.eolo.it/home/casa/eolo/eolo-piu.html\",\r\n  \"configuration\":{\r\n      \"useJQuery\":false,\r\n      \"makeSnapshot\":false,\r\n      \"headless\":false,\r\n      \"singleProcess\":false,\r\n      \"remoteDebuggingPort\":false,\r\n      \"driverVersion\":\"105.0.5195.54\",\r\n      \"browserVersion\":\"105.0.5195.54\",\r\n      \"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36.\",\r\n      \"extraConfiguration\":\"--disable-dev-shm-usage\"\r\n  },\r\n  \"activities\": [\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".eolo-offerta-rectangle a.eolo-orange-button\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"Varese\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #city_label\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \"#ui-id-1 .ui-menu-item\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"Via Gaspare Gozzi\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #address\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \"#ui-id-5 .ui-menu-item\"\r\n          }\r\n        \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"1\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #number\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".eolo-orange-button.check-coverage-box--check-coverage-btn.js-aidTarget\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Exist\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".new-funnel-2021--address-content-info img[src*='bollino-fibra']\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"ExistText\",\r\n      \"text\": \"La tua zona è coperta!\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".new-funnel-2021--configuration.new-funnel-2021--questions h1\"\r\n          }\r\n      }\r\n    }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EC2 Test GitHub",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \"url\": \"https://www.eolo.it/home/casa/eolo/eolo-piu.html\",\r\n  \"configuration\":{\r\n      \"useJQuery\":false,\r\n      \"makeSnapshot\":true,\r\n      \"headless\":true,\r\n      \"remoteDebuggingPort\":false,\r\n      \"driverVersion\":\"104.0.5112.20\",\r\n      \"browserVersion\":\"104.0.5112.79\",\r\n      \"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36.\"\r\n  },\r\n  \"activities\": [\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".eolo-offerta-rectangle a.eolo-orange-button\"\r\n          }\r\n        \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"Varese\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #city_label\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \"#ui-id-1 .ui-menu-item\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"Via Gaspare Gozzi\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #address\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \"#ui-id-5 .ui-menu-item\"\r\n          }\r\n        \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"InsertText\",\r\n      \"textToInsert\":\"1\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".form-field.field-example #number\"\r\n          }  \r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Click\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".eolo-orange-button.check-coverage-box--check-coverage-btn.js-aidTarget\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"Exist\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".new-funnel-2021--address-content-info img[src*='bollino-fibra']\"\r\n          }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"ExistText\",\r\n      \"text\": \"La tua zona è coperta!\",\r\n      \"elementHtml\": {\r\n          \"selector\":{\r\n            \"cssSelector\": \".new-funnel-2021--configuration.new-funnel-2021--questions h1\"\r\n          }\r\n      }\r\n    }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://54.73.104.25:8081/test",
+					"protocol": "http",
+					"host": [
+						"54",
+						"73",
+						"104",
+						"25"
+					],
+					"port": "8081",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

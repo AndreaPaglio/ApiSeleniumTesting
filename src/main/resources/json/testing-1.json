@@ -1,0 +1,87 @@
+{
+  "url": "https://www.eolo.it/home/casa/eolo/eolo-piu.html",
+  "configuration":{
+      "useJQuery":false,
+      "makeSnapshot":false
+  },
+  "activities": [
+    {
+      "type": "Click",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".eolo-offerta-rectangle a.eolo-orange-button"
+          }
+        
+      }
+    },
+    {
+      "type": "InsertText",
+      "textToInsert":"Varese",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".form-field.field-example #city_label"
+          }  
+      }
+    },
+    {
+      "type": "Click",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": "#ui-id-1 .ui-menu-item"
+          }
+      }
+    },
+    {
+      "type": "InsertText",
+      "textToInsert":"Via Gaspare Gozzi",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".form-field.field-example #address"
+          }  
+      }
+    },
+    {
+      "type": "Click",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": "#ui-id-5 .ui-menu-item"
+          }
+        
+      }
+    },
+    {
+      "type": "InsertText",
+      "textToInsert":"1",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".form-field.field-example #number"
+          }  
+      }
+    },
+    {
+      "type": "Click",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".eolo-orange-button.check-coverage-box--check-coverage-btn.js-aidTarget"
+          }
+      }
+    },
+    {
+      "type": "Exist",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".new-funnel-2021--address-content-info img[src*='bollino-fibra']"
+          }
+      }
+    },
+    {
+      "type": "ExistText",
+      "text": "La tua zona è coperta!",
+      "elementHtml": {
+          "selector":{
+            "cssSelector": ".new-funnel-2021--configuration.new-funnel-2021--questions h1"
+          }
+      }
+    }
+    ]
+}
