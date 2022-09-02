@@ -1,4 +1,4 @@
-package net.seniorsoftwareengineer.testing.activity;
+package net.seniorsoftwareengineer.testing.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

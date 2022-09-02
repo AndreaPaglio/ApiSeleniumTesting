@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +15,8 @@ import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
-import net.seniorsoftwareengineer.testing.service.offuscate.OffuscateService;
+import net.seniorsoftwareengineer.testing.service.TestService;
+import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
 
 /**
  * Action have to used if you want search in one DOM element. Useful for cascade search
@@ -43,7 +45,7 @@ public class GetElement extends Activity implements ActivityAction, Serializable
 
 	@Override
 	public void execute(WebDriver driver) {
-		final WebElement webElement = OffuscateService.getElement(driver,
+		final WebElement webElement = testService.getElement(driver,
 				getElementHtml().getSelector().getCssSelector());
 		this.webElements.add(webElement);
 	}

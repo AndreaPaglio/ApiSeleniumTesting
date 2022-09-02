@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -31,9 +29,13 @@ import org.springframework.validation.annotation.Validated;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.activity.TestingException;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
-
+import net.seniorsoftwareengineer.testing.exception.TestingException;
+/**
+ * Test implementation for chrome
+ * Have to chrome drivers installed on environment
+ *
+ */
 @Slf4j
 @Component
 public class ChromeTesting implements Test {

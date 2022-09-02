@@ -38,11 +38,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.activity.ResultTesting;
-import net.seniorsoftwareengineer.testing.activity.TestingException;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.option.OptionChromeUseToTesting;
+import net.seniorsoftwareengineer.testing.response.ResultTesting;
 import net.seniorsoftwareengineer.testing.utility.constants.ConstantsTesting;
 import springfox.documentation.annotations.ApiIgnore;
 

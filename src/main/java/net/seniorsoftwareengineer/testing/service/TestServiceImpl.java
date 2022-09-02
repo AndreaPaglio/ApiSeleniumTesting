@@ -1,4 +1,4 @@
-package net.seniorsoftwareengineer.testing.service.offuscate;
+package net.seniorsoftwareengineer.testing.service;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -23,8 +23,12 @@ import net.seniorsoftwareengineer.testing.service.utility.WebPageUtility;
  */
 @Service
 @Slf4j
-public class OffuscateService {
+public class TestServiceImpl implements TestService{
 
+	 public TestServiceImpl () {
+		 
+	 }
+	
 	public static void skip(final WebDriver driver, String cssSelector) {
 		final Actions actions = new Actions(driver);
 		actions.moveToElement(driver.findElement(By.cssSelector(cssSelector)), WebPageUtility.random(5),
@@ -44,7 +48,7 @@ public class OffuscateService {
 		}
 	}
 
-	public static WebElement getElement(WebDriver driver, String cssSelectorMainPage) {
+	public WebElement getElement(WebDriver driver, String cssSelectorMainPage) {
 		try {
 			final Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(15, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS).ignoring(Exception.class);

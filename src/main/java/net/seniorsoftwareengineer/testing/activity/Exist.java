@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -16,7 +17,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
-import net.seniorsoftwareengineer.testing.service.offuscate.OffuscateService;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
+import net.seniorsoftwareengineer.testing.service.TestService;
+import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
 
 /**
  * Exist class extend Activity class for check if exist in dom one element selected by css selector
@@ -44,7 +47,7 @@ public class Exist extends Activity implements ActivityAction, Serializable {
 
 	@Override
 	public void execute(WebDriver driver) throws TestingException {
-		final WebElement webElement = OffuscateService.getElement(driver,
+		final WebElement webElement = testService.getElement(driver,
 				getElementHtml().getSelector().getCssSelector());
 		if(webElement == null) {
 			driver.close();

@@ -22,6 +22,9 @@ import lombok.Data;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
 import net.seniorsoftwareengineer.testing.builder.Test;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
+import net.seniorsoftwareengineer.testing.service.TestService;
+import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
 
 /**
  * All actions class extend Activity class
@@ -110,6 +113,10 @@ public class Activity implements ActivityAction, Serializable {
 	@JsonProperty("isNewPage")
 	private Boolean isNewPage = Boolean.TRUE;
 
+	@JsonIgnore
+	@ApiModelProperty(hidden=true)
+	protected TestService testService;
+	
 	@Override
 	public void execute(WebDriver driver) throws TestingException {
 	}
@@ -118,6 +125,7 @@ public class Activity implements ActivityAction, Serializable {
 		this.parentId = new ArrayList<String>();
 		this.pageToTest = new ChromeTesting();
 		this.elementHtml = new Element();
+		this.testService = new TestServiceImpl();
 	}
 
 	public static void newIdx(Activity activity) {
@@ -129,6 +137,7 @@ public class Activity implements ActivityAction, Serializable {
 	public Activity(Element element) {
 		super();
 		this.elementHtml = element;
+		this.testService = new TestServiceImpl();
 	}
 
 	public Activity(List<Element> info) {
@@ -138,6 +147,7 @@ public class Activity implements ActivityAction, Serializable {
 	public Activity(List<Element> info, Element element) {
 		super();
 		this.elementHtml = element;
+		this.testService = new TestServiceImpl();
 	}
 
 	public void takeSnapshot(String path) throws TestingException {

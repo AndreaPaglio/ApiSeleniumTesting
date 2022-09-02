@@ -14,9 +14,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  *
  */
 @SpringBootApplication(scanBasePackages = { "net.seniorsoftwareengineer", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
-		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller" })
+		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
 @EntityScan({ "net.seniorsoftwareengineer", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
-		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller" })
+		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
 @EnableSwagger2WebMvc
 public class TestingApplication {
 

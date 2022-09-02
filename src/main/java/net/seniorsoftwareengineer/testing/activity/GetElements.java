@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
  * Actions to use if you want list all elements for one css selector. Useful for cascade search

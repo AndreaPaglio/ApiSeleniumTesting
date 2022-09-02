@@ -11,9 +11,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import net.seniorsoftwareengineer.testing.activity.TestingException;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.option.OptionChromeUseToTesting;
 
 class ChromeTestingTest {

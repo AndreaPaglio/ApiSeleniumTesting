@@ -1,4 +1,4 @@
-package net.seniorsoftwareengineer.testing.activity;
+package net.seniorsoftwareengineer.testing.response;
 
 import java.io.Serializable;
 import java.util.Map;

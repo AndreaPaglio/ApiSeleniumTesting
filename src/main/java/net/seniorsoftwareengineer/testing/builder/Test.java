@@ -2,8 +2,8 @@ package net.seniorsoftwareengineer.testing.builder;
 
 import java.io.IOException;
 
-import net.seniorsoftwareengineer.testing.activity.TestingException;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 public interface Test {
 	public Test goInfiniteScroll();

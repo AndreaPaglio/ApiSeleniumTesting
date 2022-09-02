@@ -35,10 +35,10 @@ import net.seniorsoftwareengineer.testing.activity.GetElement;
 import net.seniorsoftwareengineer.testing.activity.GetElements;
 import net.seniorsoftwareengineer.testing.activity.InsertText;
 import net.seniorsoftwareengineer.testing.activity.RetrieveData;
-import net.seniorsoftwareengineer.testing.activity.TestingException;
 import net.seniorsoftwareengineer.testing.builder.Configuration;
 import net.seniorsoftwareengineer.testing.builder.Pagination;
 import net.seniorsoftwareengineer.testing.builder.Test;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.utility.constants.ConstantsTesting;
 
 /**
