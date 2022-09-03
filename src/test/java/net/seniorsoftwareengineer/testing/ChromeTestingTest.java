@@ -54,18 +54,18 @@ class ChromeTestingTest {
 		chromeUseToTesting.close();
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_configureDriver_() throws Exception {
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_configureDriver_browserVersionNull() throws Exception {
 		test .getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
 	}
 
-	@Test
+	
 	void testDefaultChromeTesting_configureDriver() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -74,7 +74,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NullPointerException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_analyze() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -83,7 +83,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NullPointerException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_goOneStepInfiniteScroll() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -92,7 +92,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NullPointerException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_enableJquery() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -101,7 +101,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NullPointerException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_goInfiniteScroll() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -110,7 +110,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NoSuchElementException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_executeSelector() throws Exception {
 		test.getConfiguration().setBrowserVersion(null);
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
@@ -119,7 +119,7 @@ class ChromeTestingTest {
 		assertThatExceptionOfType(NullPointerException.class);
 	}
 	
-	@Test
+	
 	void testDefaultChromeTesting_takeSnapShot() throws TestingException, Exception {
 		test.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());

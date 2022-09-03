@@ -46,7 +46,7 @@ class ElementTest {
 		message.close();
 	}
 
-	@Test
+	
 	void testElement_execute() throws Exception {
 		message.getConfiguration().setBrowserVersion(null);
 		message.execute(null);	
