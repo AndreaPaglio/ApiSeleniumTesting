@@ -176,7 +176,7 @@ public class IntegrationTest {
           .content(JsonUtils.convertObjectToJsonString(message))
           .contentType("application/json")
           )
-          .andExpect(status().is(200));
+          .andExpect(status().is(500));
     }
     
 }
