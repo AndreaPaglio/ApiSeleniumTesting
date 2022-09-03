@@ -3,21 +3,21 @@ package net.seniorsoftwareengineer.testing.activity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import org.openqa.selenium.WebDriver;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
+import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
  * Usefully class for retrieve data for specific css selector
@@ -38,22 +38,24 @@ public class RetrieveData extends Activity implements ActivityAction, Serializab
 	}
 
 	@JsonCreator
-	public RetrieveData(@JsonProperty("type") String type, @JsonProperty("elementHtml") Element element,
-			@JsonProperty("info") List<Element> info) {
+	public RetrieveData(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
+			@JsonProperty("info") List<TestCase> info) {
 		super(element);
 		this.info = info;
 	}
 
 	@Override
-	public void execute(WebDriver driver) {
+	public void execute(Optional<WebDriver> driver) throws TestingException {
 		Activity.newIdx(this);
-		final List<Element> retrieveElementHtmls = info.stream().map(e -> {
+		setDriver(driver);
+		WebDriver chromeDriver = driver.get();
+		info.stream().map(e -> {
 			try {
 				WebElement temp = null;
 				if (getElementHtml() != null && getElementHtml().getElement() != null) {
 					temp = getElementHtml().getElement();
 				} else {
-					temp = driver.findElement(By.tagName("body"));
+					temp = chromeDriver.findElement(By.tagName("body"));
 					String result = pageToTest.executeSelector(e.getSelector().getJquerySelector());
 					log.info("{}", result);
 				}
@@ -61,20 +63,20 @@ public class RetrieveData extends Activity implements ActivityAction, Serializab
 					e.setParentId(this.getParentId());
 				}
 				e.setIdx(getIdx());
-				if (!StringUtils.isEmpty(e.getSelector().getClasses())) {
+				if (StringUtils.isNotEmpty(e.getSelector().getClasses())) {
 					temp = temp.findElement(By.className(e.getSelector().getClasses()));
 				}
-				if (!StringUtils.isEmpty(e.getSelector().getId())) {
+				if (StringUtils.isNotEmpty(e.getSelector().getId())) {
 					temp = temp.findElement(By.id(e.getSelector().getId()));
 				}
-				if (!StringUtils.isEmpty(e.getSelector().getCssSelector())) {
+				if (StringUtils.isNotEmpty(e.getSelector().getCssSelector())) {
 					temp = temp.findElement(By.cssSelector(e.getSelector().getCssSelector()));
 				}
-				if (!StringUtils.isEmpty(e.getSelector().getTag())) {
+				if (StringUtils.isNotEmpty(e.getSelector().getTag())) {
 					temp = temp.findElement(By.cssSelector(e.getSelector().getTag()));
 				}
 
-				if (!StringUtils.isEmpty(e.getSelector().getAttribute())) {
+				if (StringUtils.isNotEmpty(e.getSelector().getAttribute())) {
 					e.setValue(temp.getAttribute(e.getSelector().getAttribute()));
 				} else {
 					e.setValue(temp.getText());
@@ -85,9 +87,6 @@ public class RetrieveData extends Activity implements ActivityAction, Serializab
 
 			return e;
 		}).collect(Collectors.toList());
-//		TODO PUSH IN QUEUE
-//		pushPageToTest(retrieveElementHtmls);
-//		pushToSave(retrieveElementHtmls);
 	}
 
 }

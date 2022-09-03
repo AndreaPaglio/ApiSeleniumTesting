@@ -3,6 +3,7 @@ package net.seniorsoftwareengineer.testing.activity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,7 +19,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.service.TestService;
 import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
@@ -43,19 +44,20 @@ public class Click extends Activity implements ActivityAction, Serializable {
 	}
 
 	@JsonCreator(mode = Mode.DEFAULT)
-	public Click(@JsonProperty("type") String type, @JsonProperty("elementHtml") Element element,
-			@JsonProperty("info") List<Element> info) {
+	public Click(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
+			@JsonProperty("info") List<TestCase> info) {
 		super(element);
 		this.type = type;
 	}
 
 	@Override
-	public void execute(WebDriver driver) throws TestingException {
+	public void execute(Optional<WebDriver> driver) throws TestingException {
+		this.setDriver(driver);
 		final WebElement webElement = testService.getElement(driver,
 				getElementHtml().getSelector().getCssSelector());
 		try {
 			try {
-				final Actions actions = new Actions(driver);
+				final Actions actions = new Actions(driver.get());
 				actions.moveToElement(webElement, 0, 0);
 				actions.moveByOffset(WebPageUtility.random(5), WebPageUtility.random(5)).click().build().perform();
 				
@@ -63,7 +65,7 @@ public class Click extends Activity implements ActivityAction, Serializable {
 				webElement.click();
 			}
 		} catch (Exception e) {
-			    driver.close();
+			    close();
 				throw new TestingException(getElementHtml().getSelector().getCssSelector(), Click.class.getName());
 		}
 	}

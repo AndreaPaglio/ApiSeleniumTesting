@@ -3,6 +3,7 @@ package net.seniorsoftwareengineer.testing.activity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
 import net.seniorsoftwareengineer.testing.builder.Test;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.service.TestService;
 import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
@@ -32,7 +33,7 @@ import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
  */
 @Component
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = "type")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({ @JsonSubTypes.Type(value = Click.class, name = "Click"),
 		@JsonSubTypes.Type(value = InsertText.class, name = "InsertText"),
@@ -48,7 +49,7 @@ discriminator = "type", subTypes = {
 public class Activity implements ActivityAction, Serializable {
 	@JsonIgnore
 	@ApiModelProperty(position = 2, notes = "Values: Click/InsertText, Exist, ExistText", allowableValues = "InsertText, Exist, ExistText,Click")
-	@JsonProperty("type")
+//	@JsonProperty("type")
 	private String type;
 	
 	@ApiModelProperty(position = 1, notes = "Element DOM to be select by css selector \n\n"
@@ -87,7 +88,7 @@ public class Activity implements ActivityAction, Serializable {
 			+ "      }\n"
 			+ "    }")
 	@JsonProperty("elementHtml")
-	protected Element elementHtml = null;
+	protected TestCase elementHtml = null;
 
 	@JsonIgnore
 	@ApiModelProperty(hidden=true)
@@ -103,7 +104,7 @@ public class Activity implements ActivityAction, Serializable {
 	
 	@ApiModelProperty(hidden=true)
 	@JsonProperty("info")
-	protected List<Element> info;
+	protected List<TestCase> info;
 	
 	@JsonIgnore
 	@ApiModelProperty(hidden=true)
@@ -117,15 +118,20 @@ public class Activity implements ActivityAction, Serializable {
 	@ApiModelProperty(hidden=true)
 	protected TestService testService;
 	
+	@JsonIgnore
+	@ApiModelProperty(hidden=true)
+	private Optional<WebDriver> driver;
+	
 	@Override
-	public void execute(WebDriver driver) throws TestingException {
+	public void execute(Optional<WebDriver> driver) throws TestingException {
 	}
 
 	public Activity() {
 		this.parentId = new ArrayList<String>();
 		this.pageToTest = new ChromeTesting();
-		this.elementHtml = new Element();
+		this.elementHtml = new TestCase();
 		this.testService = new TestServiceImpl();
+		driver = Optional.empty();
 	}
 
 	public static void newIdx(Activity activity) {
@@ -134,24 +140,33 @@ public class Activity implements ActivityAction, Serializable {
 		}
 	}
 
-	public Activity(Element element) {
+	public Activity(TestCase element) {
 		super();
 		this.elementHtml = element;
 		this.testService = new TestServiceImpl();
+		driver = Optional.empty();
 	}
 
-	public Activity(List<Element> info) {
+	public Activity(List<TestCase> info) {
 		super();
+		driver = Optional.empty();
 	}
 
-	public Activity(List<Element> info, Element element) {
+	public Activity(List<TestCase> info, TestCase element) {
 		super();
 		this.elementHtml = element;
 		this.testService = new TestServiceImpl();
+		driver = Optional.empty();
 	}
 
 	public void takeSnapshot(String path) throws TestingException {
 		this.pageToTest.takeSnapShot(path);
+	}
+	
+	public void close() {
+		if(driver != null && driver.isPresent()) {
+			driver.get().quit();
+		}
 	}
 	
 }

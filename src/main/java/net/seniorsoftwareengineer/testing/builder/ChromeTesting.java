@@ -4,9 +4,9 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -23,13 +23,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 /**
  * Test implementation for chrome
@@ -40,17 +38,17 @@ import net.seniorsoftwareengineer.testing.exception.TestingException;
 @Component
 public class ChromeTesting implements Test {
 	private static final int WAIT_TIME_SLEEPING = 4000;
-	private WebDriver driver = null;
-	private Configuration configuration;
+	private Optional<WebDriver> driver;
+	private WebDriver driverChrome;
 	
 	public ChromeTesting() {
 		super();
+		this.driver = Optional.empty();
 	}
 
 	public Test configure(ChromeOptions options, Configuration configuration) throws Exception {
 		WebDriverManager.chromedriver().browserVersion(configuration.getBrowserVersion()).driverVersion(configuration.getDriverVersion()).setup();
-		this.driver = new ChromeDriver(options);
-		this.configuration = configuration;
+		this.driver = Optional.of(new ChromeDriver(options));
 		if(configuration.getEnableThirdPartyCookies()) {
 			enableThirdPartyCookies();
 		}
@@ -58,8 +56,9 @@ public class ChromeTesting implements Test {
 	}
 
 	@Override
-	public Test goInfiniteScroll() {
-		final JavascriptExecutor webPage = (JavascriptExecutor) driver;
+	public Test goInfiniteScroll() throws NoSuchElementException {
+		driverChrome = driver.get();
+		final JavascriptExecutor webPage = (JavascriptExecutor) driverChrome;
 		long heightWindow = (long) webPage.executeScript("return document.body.scrollHeight", "");
 		while (true) {
 			webPage.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
@@ -79,34 +78,36 @@ public class ChromeTesting implements Test {
 	}
 	
 	@Override
-	public void takeSnapShot(String fileWithPath) throws TestingException {
+	public void takeSnapShot(String fileWithPath) throws TestingException, NoSuchElementException {
 		try {
-			TakesScreenshot scrShot = ((TakesScreenshot) driver);
+			driverChrome = driver.get();
+			TakesScreenshot scrShot = ((TakesScreenshot) driverChrome);
 			File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
 			File destFile = new File(fileWithPath);
 			FileUtils.copyFile(srcFile, destFile);
 		} catch (Exception e) {
-			driver.close();
+			close();
 			throw new TestingException(e.getMessage(), "takeSnapshot");
 		}
 	}
 
 	@Override
-	public Test enableJquery() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+	public Test enableJquery() throws NoSuchElementException {
+		driverChrome = driver.get();
+		JavascriptExecutor js = (JavascriptExecutor) driverChrome;
 		js.executeScript(
 				"var headID = document.getElementsByTagName('head')[0]; var newScript = document.createElement('script');newScript.type = 'text/javascript'; newScript.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';headID.appendChild(newScript);");
-		WebDriverWait wait = new WebDriverWait(driver, 30);
+		WebDriverWait wait = new WebDriverWait(driverChrome, 30);
 		Function<WebDriver, Boolean> jQueryAvailable = WebDriver -> ((Boolean) js
 				.executeScript("return (typeof jQuery != \'undefined\')"));
 		wait.until(jQueryAvailable);
-//		js.executeScript("$.noConflict();");
 		return this;
 	}
 
 	@Override
-	public String executeSelector(String selector) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+	public String executeSelector(String selector) throws NoSuchElementException {
+		driverChrome = driver.get();
+		JavascriptExecutor js = (JavascriptExecutor) driverChrome;
 		if (StringUtils.isNotBlank(selector)) {
 			String w = (String) js.executeScript("return " + selector);
 			return w;
@@ -115,11 +116,12 @@ public class ChromeTesting implements Test {
 	}
 
 	@Override
-	public Test enableThirdPartyCookies() throws TestingException {
-		ArrayList<String> windowHandles = new ArrayList<String>(driver.getWindowHandles());
+	public Test enableThirdPartyCookies() throws TestingException, NoSuchElementException {
+		driverChrome = driver.get();
+		ArrayList<String> windowHandles = new ArrayList<String>(driverChrome.getWindowHandles());
 
 		// Activate Browser window
-		driver.switchTo().window(driver.getWindowHandle());
+		driverChrome.switchTo().window(driverChrome.getWindowHandle());
 
 		// Open New Tab Ctrl + T
 		Robot robot;
@@ -134,23 +136,23 @@ public class ChromeTesting implements Test {
 			final int retries = 100;
 			for (int i = 0; i < retries; i++) {
 				Thread.sleep(100);
-				if (driver.getWindowHandles().size() > windowHandles.size())
+				if (driverChrome.getWindowHandles().size() > windowHandles.size())
 					break;
 			}
 
 			// Enable Third Party Cookies
-			if (driver.getWindowHandles().size() > windowHandles.size()) {
-				driver.close();
-				windowHandles = new ArrayList<String>(driver.getWindowHandles());
-				driver.switchTo().window(windowHandles.get(windowHandles.size() - 1));
-				final List list = driver.findElements(By.id("cookie-controls-toggle"));
-				final Optional<WebElement> selectedCookieControlsToggle = driver
+			if (driverChrome.getWindowHandles().size() > windowHandles.size()) {
+				close();
+				windowHandles = new ArrayList<String>(driverChrome.getWindowHandles());
+				driverChrome.switchTo().window(windowHandles.get(windowHandles.size() - 1));
+				final List list = driverChrome.findElements(By.id("cookie-controls-toggle"));
+				final Optional<WebElement> selectedCookieControlsToggle = driverChrome
 						.findElements(By.id("cookie-controls-toggle")).stream()
 						.filter(x -> x.getAttribute("checked") != null).findFirst();
 				Optional.ofNullable(selectedCookieControlsToggle).get().get().click();
 			}
 		} catch (Exception e) {
-			driver.close();
+			close();
 			throw new TestingException("Error when enable Third Parties Cookies", "enableThirdPartyCookies");
 		}
 		
@@ -158,13 +160,14 @@ public class ChromeTesting implements Test {
 	}
 
 	@Override
-	public void analyze(Element page) throws TestingException {
+	public void analyze(TestCase page) throws TestingException, NoSuchElementException {
 		if(StringUtils.isNotEmpty(page.getUrl()) || StringUtils.isNotEmpty(page.getValue())){
+			driverChrome = driver.get();
 			String url = page.getUrl();
 			if (StringUtils.isEmpty(url)) {
 				url = page.getValue();
 			}
-			driver.get(url);
+			driverChrome.get(url);
 			if (StringUtils.isEmpty(page.getIdx())) {
 				page.setIdx(UUID.randomUUID().toString());
 			}
@@ -174,19 +177,26 @@ public class ChromeTesting implements Test {
 			}
 			
 			page.execute(driver);
-			driver.close();
+			close();
 		}
 	}
 
 	@Override
 	public void close() {
-		driver.close();
+		if(driver != null && driver.isPresent()) {
+			try {
+				driverChrome.quit();	
+			} catch (Exception e) {
+				log.error("Error closing session", e);
+			}
+		}
 	}
 
 
 	@Override
-	public Boolean goOneStepInfiniteScroll() {
-		final JavascriptExecutor webPage = (JavascriptExecutor) driver;
+	public Boolean goOneStepInfiniteScroll() throws NoSuchElementException {
+		driverChrome = driver.get();
+		final JavascriptExecutor webPage = (JavascriptExecutor) driverChrome;
 		long heightWindow = (long) webPage.executeScript("return document.body.scrollHeight", "");
 		webPage.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
 		try {
@@ -202,6 +212,12 @@ public class ChromeTesting implements Test {
 		heightWindow = currentLength;
 
 		return Boolean.TRUE;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		close();
 	}
 
 }

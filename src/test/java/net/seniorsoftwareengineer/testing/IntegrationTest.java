@@ -1,6 +1,7 @@
 package net.seniorsoftwareengineer.testing;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -8,38 +9,59 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import lombok.Value;
 import net.seniorsoftwareengineer.testing.activity.Activity;
 import net.seniorsoftwareengineer.testing.activity.Click;
 import net.seniorsoftwareengineer.testing.activity.Exist;
 import net.seniorsoftwareengineer.testing.activity.ExistText;
 import net.seniorsoftwareengineer.testing.activity.InsertText;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
+import net.seniorsoftwareengineer.testing.config.TestProperty;
 import net.seniorsoftwareengineer.testing.controller.PageTestingRest;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.service.utility.JsonUtils;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest({PageTestingRest.class, ChromeTesting.class})
+@WebMvcTest({PageTestingRest.class, ChromeTesting.class, TestProperty.class})
+@TestPropertySource(properties = "testing.properties")
 public class IntegrationTest {
-
+    @Autowired
+    TestProperty testProperty;
+	
+	
     @Autowired
     private MockMvc mvc;
 
+    private TestCase message;
+    
+    @BeforeEach
+    public void start() {
+    	message = new TestCase();
+    }
+    
+    @AfterEach
+    public void end() {
+    	message.close();
+    }
+    
     @Test
     public void PageTestingRest_configurationNull() throws Exception {
-        Element message = new Element();
         message.setConfiguration(null);
-        message.setUrl("www.google.com");
-        mvc.perform(get("/test")
+        message.setUrl(testProperty.getUrl());
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-          .contentType("application/json"))
+          .contentType(testProperty.getApiContentType()))
           .andExpect(status().is5xxServerError())
           .andExpect(jsonPath("$.['errors']['configuration']", is("Special configuration to be tested")));
     }
@@ -47,41 +69,37 @@ public class IntegrationTest {
     @Test
     public void PageTestingRest_browserVersion()
       throws Exception {
-        Element message = new Element();
-        mvc.perform(get("/test")
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-          .contentType("application/json"))
+          .contentType(testProperty.getApiContentType()))
           .andExpect(status().is5xxServerError())
           .andExpect(jsonPath("$.['errors']['configuration.browserVersion']", is("Browser Version must be not empty")));
     }
     
     @Test
     public void PageTestingRest_urlNull() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
 
-        mvc.perform(get("/test")
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-          .contentType("application/json"))
+          .contentType(testProperty.getApiContentType()))
           .andExpect(status().is5xxServerError())
-          .andExpect(jsonPath("$.['errors']['url']", is("Url cannot be empty")));
+          .andExpect(jsonPath("$.['errors']['url']", isA(String.class)));
     }
     
     @Test
     public void PageTestingRest_testsimple() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
-        message.setUrl("https://www.google.com");
-        mvc.perform(get("/test")
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
+        message.setUrl(testProperty.getUrl());
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-          .contentType("application/json"))
+          .contentType(testProperty.getApiContentType()))
           .andExpect(status().is(200));
     }
     
     @Test
     public void PageTestingRest_textToInsert() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
         message.getConfiguration().setUseJQuery(true);
         List<Activity> list = new ArrayList<Activity>();
         InsertText insertText = new InsertText();
@@ -93,18 +111,16 @@ public class IntegrationTest {
         list.add(insertText);
         
 		message.setActivities(list);
-        message.setUrl("https://www.google.com");
-        mvc.perform(get("/test")
+        message.setUrl(testProperty.getUrl());
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-         .contentType("application/json")
-          )
+          .contentType(testProperty.getApiContentType()))
           .andExpect(status().is(500));
     }
     
     @Test
     public void PageTestingRest_click() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
         List<Activity> list = new ArrayList<Activity>();
         
         Click click = new Click();
@@ -115,18 +131,17 @@ public class IntegrationTest {
         list.add(click);
         
 		message.setActivities(list);
-        message.setUrl("https://www.google.com");
-        mvc.perform(get("/test")
+        message.setUrl(testProperty.getUrl());
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-         .contentType("application/json")
+         .contentType(testProperty.getApiContentType())
           )
           .andExpect(status().is(200));
     }
     
     @Test
     public void PageTestingRest_exist() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
         List<Activity> list = new ArrayList<Activity>();
         
         Exist exist = new Exist();
@@ -136,18 +151,17 @@ public class IntegrationTest {
         list.add(exist);
         
 		message.setActivities(list);
-        message.setUrl("https://www.google.com");
-        mvc.perform(get("/test")
+        message.setUrl(testProperty.getUrl());
+        mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
-         .contentType("application/json")
+         .contentType(testProperty.getApiContentType())
           )
           .andExpect(status().is(200));
     }
     
     @Test
     public void PageTestingRest_existText() throws Exception {
-        Element message = new Element();
-        message.getConfiguration().setBrowserVersion("104.0.5112.102");
+        message.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
         List<Activity> list = new ArrayList<Activity>();
         
         ExistText exist = new ExistText();
@@ -156,11 +170,11 @@ public class IntegrationTest {
         message.getSelector().setCssSelector("[name='q']");
         list.add(exist);
         
-		message.setActivities(list);
-        message.setUrl("https://www.google.com");
+        message.setActivities(list);
+        message.setUrl(testProperty.getUrl());
         mvc.perform(get("/test")
           .content(JsonUtils.convertObjectToJsonString(message))
-         .contentType("application/json")
+          .contentType("application/json")
           )
           .andExpect(status().is(200));
     }

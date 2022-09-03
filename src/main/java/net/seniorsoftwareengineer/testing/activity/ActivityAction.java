@@ -2,10 +2,11 @@ package net.seniorsoftwareengineer.testing.activity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
@@ -13,12 +14,14 @@ import net.seniorsoftwareengineer.testing.exception.TestingException;
  *
  */
 public interface ActivityAction extends Serializable {
-	public void execute(WebDriver driver) throws TestingException;
+	public void execute(Optional<WebDriver> driver) throws TestingException;
 
-	public void setElementHtml(Element e);
+	public void setElementHtml(TestCase e);
 
-	public List<Element> getInfo();
+	public List<TestCase> getInfo();
 	
 	public void takeSnapshot(String path) throws TestingException;
+	
+	public void close();
 
 }

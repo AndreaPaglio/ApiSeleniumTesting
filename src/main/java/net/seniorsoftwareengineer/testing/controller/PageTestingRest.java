@@ -39,7 +39,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.option.OptionChromeUseToTesting;
 import net.seniorsoftwareengineer.testing.response.ResultTesting;
@@ -77,11 +77,11 @@ public class PageTestingRest {
 			  content = { @Content(mediaType = "application/json")})
 	 })
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-	public ResponseEntity<ResultTesting> listenerPageToTest(@RequestBody @Valid @Parameter(name="Request Body", description =  "Configuration (actions to run, URL, selectors css to find out)") Element message) throws TestingException {
-		final OptionChromeUseToTesting optionsChrome = new OptionChromeUseToTesting(message.getConfiguration());
+	public ResponseEntity<ResultTesting> listenerPageToTest(@RequestBody @Valid @Parameter(name="Request Body", description =  "Configuration (actions to run, URL, selectors css to find out)") TestCase test) throws TestingException {
+		final OptionChromeUseToTesting optionsChrome = new OptionChromeUseToTesting(test.getConfiguration());
 		ResultTesting result = new ResultTesting();
 		try {
-			chromeUseToTesting.configure(optionsChrome.configure(), message.getConfiguration());
+			chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
 		} catch (final Exception e) {
 			Map<String, String> errors = new HashMap<String, String>();
 			result.setResult(ConstantsTesting.TESTING_RESULT_KO);
@@ -91,9 +91,9 @@ public class PageTestingRest {
 		    		result, 
 		            HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		message.setPageToTest(chromeUseToTesting);
-		chromeUseToTesting.analyze(message);
-		result.setRequestId(message.getIdx());
+		test.setPageToTest(chromeUseToTesting);
+		chromeUseToTesting.analyze(test);
+		result.setRequestId(test.getIdx());
 		result.setResult(ConstantsTesting.TESTING_RESULT_OK);
 		return new ResponseEntity<>(
 	    		result, 

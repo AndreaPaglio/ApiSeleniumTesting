@@ -1,5 +1,6 @@
 package net.seniorsoftwareengineer.testing.service;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -48,9 +49,10 @@ public class TestServiceImpl implements TestService{
 		}
 	}
 
-	public WebElement getElement(WebDriver driver, String cssSelectorMainPage) {
+	public WebElement getElement(Optional<WebDriver> driver, String cssSelectorMainPage) {
 		try {
-			final Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(15, TimeUnit.SECONDS)
+			WebDriver chromeDriver = driver.get();
+			final Wait<WebDriver> wait = new FluentWait<WebDriver>(chromeDriver).withTimeout(15, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS).ignoring(Exception.class);
 			final WebElement webElement = wait.until(new Function<WebDriver, WebElement>() {
 				@Override

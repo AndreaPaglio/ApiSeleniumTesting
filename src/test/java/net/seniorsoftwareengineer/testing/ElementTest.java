@@ -12,14 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.option.OptionChromeUseToTesting;
 
 class ElementTest {
 	OptionChromeUseToTesting optionsChrome;
 	ChromeTesting chromeUseToTesting;
-	Element message;
+	TestCase message;
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		
@@ -31,11 +31,12 @@ class ElementTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		message = new Element();		
+		message = new TestCase();		
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		message.close();
 	}
 
 	@Test

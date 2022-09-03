@@ -1,24 +1,24 @@
 package net.seniorsoftwareengineer.testing.builder;
 
-import java.io.IOException;
+import java.util.NoSuchElementException;
 
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 public interface Test {
-	public Test goInfiniteScroll();
+	public Test goInfiniteScroll() throws NoSuchElementException;
 
-	public Boolean goOneStepInfiniteScroll();
+	public Boolean goOneStepInfiniteScroll() throws NoSuchElementException;
 
-	public Test enableThirdPartyCookies() throws Exception;
+	public Test enableThirdPartyCookies() throws Exception, NoSuchElementException;
 
-	public void analyze(Element page) throws TestingException;
+	public void analyze(TestCase page) throws TestingException, NoSuchElementException;
 
-	public void close();
+	public void close() throws NoSuchElementException;
 
-	Test enableJquery();
+	Test enableJquery() throws NoSuchElementException;
 
-	String executeSelector(String jsExecutive);
+	String executeSelector(String jsExecutive) throws NoSuchElementException;
 	
-	public void takeSnapShot(String fileWithPath) throws TestingException;
+	public void takeSnapShot(String fileWithPath) throws TestingException, NoSuchElementException;
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -49,10 +50,10 @@ import net.seniorsoftwareengineer.testing.utility.constants.ConstantsTesting;
 @Data
 @Valid
 @Component
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"driver", "parentId", "element", "typeElement", "value", "info", "pagination"})
 @ApiModel(description = "Choose URL and actions to be performed (Click, insert text, find text)", value = "request body JSON")
 @Slf4j
-public class Element implements ActivityAction, Serializable, Cloneable, ElementToSave {
+public class TestCase implements ActivityAction, Serializable, Cloneable, ElementToSave {
 	/**
 	 * 
 	 */
@@ -133,7 +134,7 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 
 	@ApiModelProperty(hidden=true)
 	@JsonProperty("info")
-	List<Element> info;
+	List<TestCase> info;
 
 	@JsonIgnore
 	@ApiModelProperty(hidden=true)
@@ -150,52 +151,60 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 	@JsonProperty("configuration")
 	Configuration configuration;
 
-	public Element() {
-		info = new ArrayList<Element>();
+	Optional<WebDriver> driver;
+	
+	public TestCase() {
+		info = new ArrayList<TestCase>();
 		parentId = new ArrayList<String>();
 		configuration = new Configuration();
 		activities = new ArrayList<Activity>();
+		driver = Optional.empty();
 	}
 
-	public Element(String cssSelector) {
+	public TestCase(String cssSelector) {
 		super();
 		this.selector = new SelectorCss(null, cssSelector, null, null, null, null, null);
-		info = new ArrayList<Element>();
+		info = new ArrayList<TestCase>();
+		driver = Optional.empty();
 	}
 
-	public static void newIdx(Element element) {
+	public static void newIdx(TestCase element) {
 		if (StringUtils.isEmpty(element.getIdx())) {
 			element.setIdx(UUID.randomUUID().toString());
 		}
 	}
 
-	public Element(String cssSelector, String classes, String id, String tag, String attribute, TypeElement typeElement,
+	public TestCase(String cssSelector, String classes, String id, String tag, String attribute, TypeElement typeElement,
 			String key) {
 		super();
 		this.selector = new SelectorCss(key, cssSelector, classes, id, tag, attribute, null);
 		this.typeElement = typeElement;
-		info = new ArrayList<Element>();
+		info = new ArrayList<TestCase>();
+		driver = Optional.empty();
 	}
 
-	public Element(String url, TypeElement typeElement, List<Activity> activities, List<Element> info) {
+	public TestCase(String url, TypeElement typeElement, List<Activity> activities, List<TestCase> info) {
 		super();
 		this.url = url;
 		this.typeElement = typeElement;
 		this.info = info;
 		this.selector = new SelectorCss();
+		driver = Optional.empty();
 	}
 
-	public Element(WebElement element) {
+	public TestCase(WebElement element) {
 		super();
 		this.selector = new SelectorCss();
 		this.element = element;
-		info = new ArrayList<Element>();
+		info = new ArrayList<TestCase>();
+		driver = Optional.empty();
 	}
 
 	@Override
-	public void execute(WebDriver driver) throws TestingException {
+	public void execute(Optional<WebDriver> driver) throws TestingException {
+		setDriver(driver);
 		for (Activity activity : getActivities()) {
-			Element.newIdx(this);
+			TestCase.newIdx(this);
 			activity.getParentId().add(getIdx());
 			if (!isNewPage && getIdx() != null) {
 				activity.setIdx(getIdx());
@@ -209,31 +218,31 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 	}
 	@ApiModelProperty(hidden=true)
 	@Override
-	public void setElementHtml(Element e) {
+	public void setElementHtml(TestCase e) {
 	}
 
 	@Override
-	public List<Element> getInfo() {
+	public List<TestCase> getInfo() {
 		return info;
 	}
 
-	public List<Element> getElementHtmlToTest() {
-		final Predicate<? super Element> isToTest = e -> {
+	public List<TestCase> getElementHtmlToTest() {
+		final Predicate<? super TestCase> isToTest = e -> {
 			return TypeElement.URL_TO_TEST.equals(e.getTypeElement());
 		};
 		return getElementHtmlToTest(isToTest, TypeElement.URL_TO_TEST);
 	}
 
 	@Override
-	public List<Element> getElementHtmlToSave() {
-		final Predicate<? super Element> isToTest = e -> {
+	public List<TestCase> getElementHtmlToSave() {
+		final Predicate<? super TestCase> isToTest = e -> {
 			return TypeElement.INFO_TO_SAVE.equals(e.getTypeElement());
 		};
 		return getElementHtmlToSave(isToTest, TypeElement.INFO_TO_SAVE);
 	}
 
-	private List<Element> getElementHtmlToTest(Predicate<? super Element> isToTest, TypeElement type) {
-		final List<Element> elem = new ArrayList<Element>();
+	private List<TestCase> getElementHtmlToTest(Predicate<? super TestCase> isToTest, TypeElement type) {
+		final List<TestCase> elem = new ArrayList<TestCase>();
 
 		info.stream().filter(isToTest).forEach(e -> {
 			elem.addAll(e.getElementHtmlToTest());
@@ -244,8 +253,8 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 		return elem;
 	}
 
-	private List<Element> getElementHtmlToSave(Predicate<? super Element> isToTest, TypeElement type) {
-		final List<Element> elem = new ArrayList<Element>();
+	private List<TestCase> getElementHtmlToSave(Predicate<? super TestCase> isToTest, TypeElement type) {
+		final List<TestCase> elem = new ArrayList<TestCase>();
 
 		info.stream().filter(isToTest).forEach(e -> {
 			elem.addAll(e.getElementHtmlToSave());
@@ -258,16 +267,16 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 
 	@Override
 	public Object clone() {
-		Element newElement = null;
+		TestCase newElement = null;
 		try {
 			super.clone();
-			newElement = new Element();
-			Element.newIdx(newElement);
+			newElement = new TestCase();
+			TestCase.newIdx(newElement);
 			newElement.setSelector(this.getSelector());
 			newElement.setTypeElement(this.getTypeElement());
-			newElement.setInfo(new ArrayList<Element>());
+			newElement.setInfo(new ArrayList<TestCase>());
 			newElement.setInfo(this.getInfo().stream().map(info -> {
-				return (Element) info.clone();
+				return (TestCase) info.clone();
 			}).collect(Collectors.toList()));
 			newElement.setUrl(this.getUrl());
 			newElement.setElement(this.getElement());
@@ -284,4 +293,22 @@ public class Element implements ActivityAction, Serializable, Cloneable, Element
 				pageToTest.takeSnapShot(path);
 		}
 	}
+
+	@Override
+	public void close() {
+		if(driver != null && driver.isPresent()) {
+			try {
+				this.driver.get().quit();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		close();
+	}
+	
+	
 }

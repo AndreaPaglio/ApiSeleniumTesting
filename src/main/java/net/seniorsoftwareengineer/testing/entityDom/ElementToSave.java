@@ -4,5 +4,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface ElementToSave {
-	public List<Element> getElementHtmlToSave();
+	public List<TestCase> getElementHtmlToSave();
 }

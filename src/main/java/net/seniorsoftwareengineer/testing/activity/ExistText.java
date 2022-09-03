@@ -3,6 +3,7 @@ package net.seniorsoftwareengineer.testing.activity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.service.TestService;
 import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
@@ -26,7 +27,7 @@ import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
  *
  */
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = "type")
 @ApiModel(parent = Activity.class, description = "Azione da usare se si vuole controllare l'esistenza di un testo in un certo elemento del DOM")
 public class ExistText extends Activity implements ActivityAction, Serializable {
 	@ApiModelProperty(required = true, notes = "ExistText se hai bisogno che venga controllato se esiste nell'elemento DOM il testo indicato", allowableValues = "ExistText", value = "ExistText")
@@ -42,18 +43,19 @@ public class ExistText extends Activity implements ActivityAction, Serializable 
 	}
 
 	@JsonCreator(mode = Mode.DEFAULT)
-	public ExistText(@JsonProperty("type") String type, @JsonProperty("elementHtml") Element element,
-			@JsonProperty("info") List<Element> info) {
+	public ExistText(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
+			@JsonProperty("info") List<TestCase> info) {
 		super(element);
 		this.type = type;
 	}
 
 	@Override
-	public void execute(WebDriver driver) throws TestingException {
+	public void execute(Optional<WebDriver> driver) throws TestingException {
+		this.setDriver(driver);
 		final WebElement webElement = testService.getElement(driver,
 				getElementHtml().getSelector().getCssSelector());
 		if(webElement == null || (text != null && !text.equals(webElement.getText()))) {
-			driver.close();
+			close();
 			throw new TestingException(getElementHtml().getSelector().getCssSelector(), ExistText.class.getName());
 		}
 	}

@@ -2,6 +2,7 @@ package net.seniorsoftwareengineer.testing.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.seniorsoftwareengineer.testing.entitydom.Element;
+import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.service.TestService;
 import net.seniorsoftwareengineer.testing.service.TestServiceImpl;
 
@@ -31,20 +32,21 @@ public class GetElement extends Activity implements ActivityAction, Serializable
 	protected String type;
 
 	@JsonCreator
-	public GetElement(@JsonProperty("elementHtml") Element element) {
+	public GetElement(@JsonProperty("elementHtml") TestCase element) {
 		super(element);
 		webElements = new ArrayList<WebElement>();
 	}
 
 	@JsonCreator
-	public GetElement(@JsonProperty("type") String type, @JsonProperty("elementHtml") Element element) {
+	public GetElement(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element) {
 		super(element);
 		this.type = type;
 		webElements = new ArrayList<WebElement>();
 	}
 
 	@Override
-	public void execute(WebDriver driver) {
+	public void execute(Optional<WebDriver> driver) {
+		this.setDriver(driver);
 		final WebElement webElement = testService.getElement(driver,
 				getElementHtml().getSelector().getCssSelector());
 		this.webElements.add(webElement);
