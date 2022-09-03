@@ -12,16 +12,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.TestPropertySource;
 
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
+import net.seniorsoftwareengineer.testing.config.TestProperty;
 import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 import net.seniorsoftwareengineer.testing.option.OptionChromeUseToTesting;
 
+@WebMvcTest({ChromeTesting.class, TestProperty.class})
+@TestPropertySource(properties = "testing.properties")
 class ChromeTestingTest {
 	OptionChromeUseToTesting optionsChrome;
 	ChromeTesting chromeUseToTesting;
 	TestCase test;
+	
+	@Autowired
+    TestProperty testProperty;
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		
@@ -111,7 +121,7 @@ class ChromeTestingTest {
 	
 	@Test
 	void testDefaultChromeTesting_takeSnapShot() throws TestingException, Exception {
-		test.getConfiguration().setBrowserVersion("105.0.5195.102");
+		test.getConfiguration().setBrowserVersion(testProperty.getBrowserVersion());
 		chromeUseToTesting.configure(optionsChrome.configure(), test.getConfiguration());
 		test.setPageToTest(chromeUseToTesting);
 		assertThatExceptionOfType(TestingException.class).isThrownBy(() -> {

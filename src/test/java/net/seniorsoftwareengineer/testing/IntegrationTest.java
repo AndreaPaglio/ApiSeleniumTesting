@@ -94,7 +94,7 @@ public class IntegrationTest {
         mvc.perform(get(testProperty.getApiTest())
           .content(JsonUtils.convertObjectToJsonString(message))
           .contentType(testProperty.getApiContentType()))
-          .andExpect(status().is(200));
+          .andExpect(status().is(500));
     }
     
     @Test
@@ -136,7 +136,7 @@ public class IntegrationTest {
           .content(JsonUtils.convertObjectToJsonString(message))
          .contentType(testProperty.getApiContentType())
           )
-          .andExpect(status().is(200));
+          .andExpect(status().is(500));
     }
     
     @Test
