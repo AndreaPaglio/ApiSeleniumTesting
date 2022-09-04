@@ -1,4 +1,4 @@
-package net.seniorsoftwareengineer;
+package net.seniorsoftwareengineer.testing;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -13,9 +13,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  * Class contain start entry point
  *
  */
-@SpringBootApplication(scanBasePackages = { "net.seniorsoftwareengineer", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
+@SpringBootApplication(scanBasePackages = { "net.seniorsoftwareengineer.testing", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
 		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
-@EntityScan({ "net.seniorsoftwareengineer", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
+@EntityScan({ "net.seniorsoftwareengineer.testing", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
 		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
 @EnableSwagger2WebMvc
 public class TestingApplication {
