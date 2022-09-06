@@ -38,11 +38,8 @@ public class IntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    private TestCase message;
-
     @BeforeEach
     public void start() {
-	message = new TestCase();
     }
 
     @AfterEach
@@ -73,7 +70,10 @@ public class IntegrationTest {
 
     @Test
     public void PageTestingRest_browserVersion() throws Exception {
-	mvc.perform(get(testProperty.getApiTest()).content(JsonUtils.convertObjectToJsonString(message))
+	Configuration configuration = BuilderConfiguration.create().driverVersion(testProperty.getDriverVersion())
+		.getConfiguration();
+	TestCase test = BuilderTestCase.create().configuration(configuration).getTestCase();
+	mvc.perform(get(testProperty.getApiTest()).content(JsonUtils.convertObjectToJsonString(test))
 		.contentType(testProperty.getApiContentType())).andExpect(status().is5xxServerError())
 		.andExpect(jsonPath("$.['errors']['configuration.browserVersion']['text']", isA(String.class)));
     }
@@ -108,6 +108,7 @@ public class IntegrationTest {
 	insertText.setType("InsertText");
 	((InsertText) insertText).setTextToInsert("test");
 	insertText.getSelector().setCssSelector("[name='q']");
+//	BrowserVersion, DriverVersion, url, activities, InsertText
 
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
 		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
@@ -122,8 +123,7 @@ public class IntegrationTest {
 	Exist exist = new Exist();
 	exist.setType("Exist");
 	exist.getSelector().setCssSelector("[name='q']");
-	message.getElementDOM().getSelector().setCssSelector("[name='q']");
-
+//	BrowserVersion, DriverVersion, url, activities, Exist
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
 		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
 	TestCase test = BuilderTestCase.create().configuration(configuration).addActivity(exist)
@@ -137,6 +137,7 @@ public class IntegrationTest {
 	ExistText exist = new ExistText();
 	exist.setType("ExistText");
 	exist.getSelector().setCssSelector("[name='q']");
+//	BrowserVersion, DriverVersion, url, activities, ExistText
 
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
 		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
