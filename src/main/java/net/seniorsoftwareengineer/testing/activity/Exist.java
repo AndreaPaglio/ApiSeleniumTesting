@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -21,38 +20,38 @@ import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
- * Exist class extend Activity class for check if exist in dom one element selected by css selector
+ * Exist class extend Activity class for check if exist in dom one element
+ * selected by css selector
  *
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(parent = Activity.class, description = "Azione da usare se si vuole controllare l'esistenza in un certo elemento del DOM")
 public class Exist extends Activity implements ActivityAction, Serializable {
-	@ApiModelProperty(required=true, value = "Exist", example = "Exist")
-	@JsonProperty("type")
-	private String type;
+    @ApiModelProperty(required = true, value = "Exist", example = "Exist")
+    @JsonProperty("type")
+    private String type;
 
-	@JsonCreator
-	public Exist() {
-		this.parentId = new ArrayList<String>();
-	}
+    @JsonCreator
+    public Exist() {
+	this.parentId = new ArrayList<String>();
+    }
 
-	@JsonCreator(mode = Mode.DEFAULT)
-	public Exist(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
-			@JsonProperty("info") List<TestCase> info) {
-		super(element);
-		this.type = type;
-	}
+    @JsonCreator(mode = Mode.DEFAULT)
+    public Exist(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
+	    @JsonProperty("info") List<TestCase> info) {
+	super(element);
+	this.type = type;
+    }
 
-	@Override
-	public void execute(Optional<WebDriver> driver) throws TestingException {
-		this.setDriver(driver);
-		final WebElement webElement = testService.getElement(driver,
-				getElementHtml().getSelector().getCssSelector());
-		if(webElement == null) {
-			close();
-			throw new TestingException(getElementHtml().getSelector().getCssSelector(), Exist.class.getName());
-		}
+    @Override
+    public void execute(Optional<WebDriver> driver) throws TestingException {
+	this.setDriver(driver);
+	final WebElement webElement = testService.getElement(driver, getSelector().getCssSelector());
+	if (webElement == null) {
+	    close();
+	    throw new TestingException(getSelector().getCssSelector(), Exist.class.getName());
 	}
+    }
 
 }

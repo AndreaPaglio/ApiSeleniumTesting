@@ -1,7 +1,6 @@
 package net.seniorsoftwareengineer.testing.activity;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,34 +11,35 @@ import org.junit.jupiter.api.Test;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 class ActivityTest {
-	Activity activity;
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    Activity activity;
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@BeforeEach
-	void setUp() throws Exception {
-		activity = new Activity();
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+	activity = new Activity();
+    }
 
-	@Test
-	void testActivity() throws TestingException {
-		activity.execute(null);
-	}
-	
-	@Test
-	void testActivity_takeSnapshot() throws TestingException {
-		assertThatExceptionOfType(TestingException.class).isThrownBy(() -> {
-			activity.takeSnapshot(null);
-		});
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
+
+    @Test
+    void testActivity() throws TestingException {
+	activity.execute(null);
+    }
+
+    @Test
+    void testActivity_takeSnapshot() throws TestingException {
+	assertThatExceptionOfType(TestingException.class).isThrownBy(() -> {
+	    activity.takeSnapshot(null);
+	});
+    }
 
 }

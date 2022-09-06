@@ -1,92 +1,74 @@
-{  "url": "https://www.eolo.it/home/casa/eolo/eolo-piu.html",
+{
+  "url": "https://www.eolo.it/home/casa/eolo/eolo-piu.html",
   "configuration":{
       "useJQuery":false,
       "makeSnapshot":false,
       "headless":false,
       "singleProcess":false,
       "remoteDebuggingPort":false,
-      "driverVersion":"105.0.5195.54",
-      "browserVersion":"105.0.5195.54",
+      "driverVersion":"105.0.5195.52",
+      "browserVersion":"105.0.5195.102",
       "userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36.",
       "extraConfiguration":"--disable-dev-shm-usage"
   },
   "activities": [
     {
       "type": "Click",
-      "elementHtml": {
-          "selector":{
-            "cssSelector": ".eolo-offerta-rectangle a.eolo-orange-button"
-          }
-      }
+        "selector":{
+                "cssSelector": ".eolo-offerta-rectangle .btn.eolo-orange-button.js-aidTarget"
+            }            
     },
     {
       "type": "InsertText",
-      "textToInsert":"Varese",
-      "elementHtml": {
-          "selector":{
+      "textToInsert":"GALLARATE",
+      "selector":{
             "cssSelector": ".form-field.field-example #city_label"
-          }  
-      }
+          }
     },
     {
       "type": "Click",
-      "elementHtml": {
-          "selector":{
+      "selector":{
             "cssSelector": "#ui-id-1 .ui-menu-item"
           }
-      }
     },
     {
       "type": "InsertText",
-      "textToInsert":"Via Gaspare Gozzi",
-      "elementHtml": {
-          "selector":{
+      "textToInsert":"Via Roma",
+    "selector":{
             "cssSelector": ".form-field.field-example #address"
           }  
-      }
     },
     {
       "type": "Click",
-      "elementHtml": {
           "selector":{
-            "cssSelector": "#ui-id-5 .ui-menu-item"
+            "cssSelector": ".ui-autocomplete .ui-menu-item.ui-menu-item-odd"
           }
-        
-      }
     },
     {
       "type": "InsertText",
       "textToInsert":"1",
-      "elementHtml": {
-          "selector":{
+      "selector":{
             "cssSelector": ".form-field.field-example #number"
-          }  
-      }
+          } 
     },
     {
       "type": "Click",
-      "elementHtml": {
           "selector":{
-            "cssSelector": ".eolo-orange-button.check-coverage-box--check-coverage-btn.js-aidTarget"
+            "cssSelector": "#copertura-eolo-2-form button.eolo-orange-button.check-coverage-box--check-coverage-btn.js-aidTarget"
           }
-      }
     },
     {
       "type": "Exist",
-      "elementHtml": {
           "selector":{
-            "cssSelector": ".new-funnel-2021--address-content-info img[src*='bollino-fibra']"
+        "cssSelector": ".new-funnel-2021--address-content-info img.new-funnel-2021--connection-type-icon[src='/.resources/eolo-portal-templating/webresources/img/copertura/bollino.png']"
           }
-      }
     },
     {
       "type": "ExistText",
       "text": "La tua zona è coperta!",
-      "elementHtml": {
-          "selector":{
-            "cssSelector": ".new-funnel-2021--configuration.new-funnel-2021--questions h1"
+      "selector":{
+            "cssSelector": "#flow-form .new-funnel-2021--configuration.new-funnel-2021--questions h1.new-funnel-2021--title"
           }
-      }
     }
     ]
 }

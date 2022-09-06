@@ -13,29 +13,32 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  * Class contain start entry point
  *
  */
-@SpringBootApplication(scanBasePackages = { "net.seniorsoftwareengineer.testing", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
-		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
-@EntityScan({ "net.seniorsoftwareengineer.testing", "net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
-		"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
+@SpringBootApplication(scanBasePackages = { "net.seniorsoftwareengineer.testing",
+	"net.seniorsoftwareengineer.testing.config", "net.seniorsoftwareengineer.testing.service.entity",
+	"net.seniorsoftwareengineer.testing.builder", "net.seniorsoftwareengineer.testing.controller",
+	"net.seniorsoftwareengineer.testing.service" })
+@EntityScan({ "net.seniorsoftwareengineer.testing", "net.seniorsoftwareengineer.testing.config",
+	"net.seniorsoftwareengineer.testing.service.entity", "net.seniorsoftwareengineer.testing.builder",
+	"net.seniorsoftwareengineer.testing.controller", "net.seniorsoftwareengineer.testing.service" })
 @EnableSwagger2WebMvc
 public class TestingApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TestingApplication.class, args);
-	}
+    public static void main(String[] args) {
+	SpringApplication.run(TestingApplication.class, args);
+    }
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+	return new ModelMapper();
+    }
 
-	@Bean
-	public CommonsRequestLoggingFilter requestLoggingFilter() {
-		CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-		loggingFilter.setIncludeClientInfo(true);
-		loggingFilter.setIncludeQueryString(true);
-		loggingFilter.setIncludePayload(true);
-		loggingFilter.setMaxPayloadLength(64000);
-		return loggingFilter;
-	}
+    @Bean
+    public CommonsRequestLoggingFilter requestLoggingFilter() {
+	CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+	loggingFilter.setIncludeClientInfo(true);
+	loggingFilter.setIncludeQueryString(true);
+	loggingFilter.setIncludePayload(true);
+	loggingFilter.setMaxPayloadLength(64000);
+	return loggingFilter;
+    }
 }
