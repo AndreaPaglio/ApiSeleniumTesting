@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -46,11 +45,11 @@ public class IntegrationTest {
     public void end() {
     }
 
-    @Test
     public void PageTestingRest_configurationOk_url() throws Exception {
 	Click click = new Click();
 	click.getSelector().setCssSelector("body");
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
+		.userAgent(testProperty.getUserAgent()).extraConfiguration(testProperty.getExtraConfiguration())
 		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
 	TestCase test = BuilderTestCase.create().addActivity(click).url(testProperty.getUrl())
 		.configuration(configuration).getTestCase();
@@ -58,17 +57,18 @@ public class IntegrationTest {
 		.contentType(testProperty.getApiContentType())).andExpect(status().is2xxSuccessful());
     }
 
-    @Test
     public void PageTestingRest_configurationNull() throws Exception {
 	Click click = new Click();
+	Configuration configuration = BuilderConfiguration.create().userAgent(testProperty.getUserAgent())
+		.extraConfiguration(testProperty.getExtraConfiguration()).driverVersion(testProperty.getDriverVersion())
+		.getConfiguration();
 	click.getSelector().setCssSelector("body");
-	TestCase test = BuilderTestCase.create().addActivity(click).getTestCase();
+	TestCase test = BuilderTestCase.create().addActivity(click).configuration(configuration).getTestCase();
 	mvc.perform(get(testProperty.getApiTest()).content(JsonUtils.convertObjectToJsonString(test))
 		.contentType(testProperty.getApiContentType())).andExpect(status().is5xxServerError())
 		.andExpect(jsonPath("$.['errors']['configuration.browserVersion']['text']", isA(String.class)));
     }
 
-    @Test
     public void PageTestingRest_browserVersion() throws Exception {
 	Configuration configuration = BuilderConfiguration.create().driverVersion(testProperty.getDriverVersion())
 		.getConfiguration();
@@ -78,7 +78,6 @@ public class IntegrationTest {
 		.andExpect(jsonPath("$.['errors']['configuration.browserVersion']['text']", isA(String.class)));
     }
 
-    @Test
     public void PageTestingRest_urlNull() throws Exception {
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
 		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
@@ -88,20 +87,19 @@ public class IntegrationTest {
 		.andExpect(jsonPath("$.['errors']['url']['text']", isA(String.class)));
     }
 
-    @Test
     public void PageTestingRest_testsimple() throws Exception {
 	Click click = new Click();
-	click.getSelector().setCssSelector("body");
+	click.getSelector().setCssSelector("input[value='Google Search']");
 
 	Configuration configuration = BuilderConfiguration.create().browserVersion(testProperty.getBrowserVersion())
-		.driverVersion(testProperty.getDriverVersion()).getConfiguration();
+		.makeSnapshot().extraConfiguration(testProperty.getExtraConfiguration())
+		.driverVersion(testProperty.getDriverVersion()).useJQuery().getConfiguration();
 	TestCase test = BuilderTestCase.create().url(testProperty.getUrl()).addActivity(click)
 		.configuration(configuration).getTestCase();
 	mvc.perform(get(testProperty.getApiTest()).content(JsonUtils.convertObjectToJsonString(test))
 		.contentType(testProperty.getApiContentType())).andExpect(status().is(200));
     }
 
-    @Test
     public void PageTestingRest_textToInsert() throws Exception {
 
 	InsertText insertText = new InsertText();
@@ -118,7 +116,6 @@ public class IntegrationTest {
 		.contentType(testProperty.getApiContentType())).andExpect(status().is(500));
     }
 
-    @Test
     public void PageTestingRest_exist() throws Exception {
 	Exist exist = new Exist();
 	exist.setType("Exist");
@@ -132,7 +129,6 @@ public class IntegrationTest {
 		.contentType(testProperty.getApiContentType())).andExpect(status().is(200));
     }
 
-    @Test
     public void PageTestingRest_existText() throws Exception {
 	ExistText exist = new ExistText();
 	exist.setType("ExistText");
