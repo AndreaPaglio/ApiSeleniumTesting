@@ -29,6 +29,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipTests -Djava.security.egd=file:/dev/./urandom -Djps.track.ap.dependencies=false
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
