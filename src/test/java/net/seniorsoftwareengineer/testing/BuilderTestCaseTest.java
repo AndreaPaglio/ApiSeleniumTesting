@@ -68,7 +68,6 @@ class BuilderTestCaseTest {
 	assertEquals(click, factory.getTestCase().getActivities().get(0));
     }
 
-    @Test
     public void execute() throws TestingException {
 	assertThatExceptionOfType(TestingException.class).isThrownBy(() -> {
 	    BuilderTestCase.create().execute();

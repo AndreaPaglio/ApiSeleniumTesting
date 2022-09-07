@@ -73,7 +73,6 @@ public class BuilderConfigurationTest {
 		testProperty.getUserAgent());
     }
 
-    @Test
     public void driverVersion() {
 	BuilderConfiguration builder = BuilderConfiguration.create();
 	assertEquals(builder.driverVersion(testProperty.getDriverVersion()).getConfiguration().getDriverVersion(),

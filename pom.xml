@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>net.seniorsoftwareengineer.testing</groupId>
 	<artifactId>selenium-api-testing</artifactId>
-	<version>1.3.2</version>
+	<version>1.3.3</version>
 	<name>ApiSeleniumTesting</name>
 	<description>Selenium Testing API</description>
 	<properties>
