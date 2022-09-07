@@ -64,7 +64,7 @@ public class PageTestingRest {
 		    @Content(mediaType = "application/json") }),
 	    @ApiResponse(responseCode = "500", description = "Any elements listed in ACTIVITY with Exist or ExistText type haven't founded.\n If some error was thrown will be listed in errors field", content = {
 		    @Content(mediaType = "application/json") }) })
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
     public ResponseEntity<ResultTesting> listenerPageToTest(
 	    @RequestBody @Valid @Parameter(name = "Request Body", description = "Configuration (actions to run, URL, selectors css to find out)") TestCase test)
 	    throws TestingException {
