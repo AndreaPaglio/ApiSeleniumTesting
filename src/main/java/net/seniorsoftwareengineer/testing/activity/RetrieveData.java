@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import net.seniorsoftwareengineer.testing.entitydom.Element;
-import net.seniorsoftwareengineer.testing.entitydom.TestCase;
+import net.seniorsoftwareengineer.testing.entitydom.SelectorCss;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
@@ -44,10 +44,15 @@ public class RetrieveData extends Activity implements ActivityAction, Serializab
     }
 
     @JsonCreator
-    public RetrieveData(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
-	    @JsonProperty("info") List<Element> info) {
-	super(element);
-	this.info = info;
+    public RetrieveData(@JsonProperty("selector") SelectorCss selector) {
+	this.type = TypeActivity.RETRIEVE_DATA.name();
+	this.selector = selector;
+    }
+
+    @JsonCreator
+    public RetrieveData(@JsonProperty("type") String type, @JsonProperty("selector") SelectorCss selector) {
+	this.type = type;
+	this.selector = selector;
     }
 
     @Override

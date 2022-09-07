@@ -2,7 +2,6 @@ package net.seniorsoftwareengineer.testing.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.seniorsoftwareengineer.testing.entitydom.TestCase;
+import net.seniorsoftwareengineer.testing.entitydom.SelectorCss;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
@@ -41,11 +40,16 @@ public class ExistText extends Activity implements ActivityAction, Serializable 
 	this.parentId = new ArrayList<String>();
     }
 
+    @JsonCreator
+    public ExistText(@JsonProperty("selector") SelectorCss selector) {
+	this.parentId = new ArrayList<String>();
+	this.selector = selector;
+    }
+
     @JsonCreator(mode = Mode.DEFAULT)
-    public ExistText(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
-	    @JsonProperty("info") List<TestCase> info) {
-	super(element);
+    public ExistText(@JsonProperty("type") String type, @JsonProperty("selector") SelectorCss selector) {
 	this.type = type;
+	this.selector = selector;
     }
 
     @Override

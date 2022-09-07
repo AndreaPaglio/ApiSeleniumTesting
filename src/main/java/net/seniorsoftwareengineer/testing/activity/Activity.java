@@ -116,13 +116,6 @@ public class Activity implements ActivityAction, Serializable {
 	}
     }
 
-    public Activity(TestCase element) {
-	super();
-	this.selector = new SelectorCss();
-	this.testService = new TestServiceImpl();
-	driver = Optional.empty();
-    }
-
     public Activity(List<TestCase> info) {
 	super();
 	driver = Optional.empty();

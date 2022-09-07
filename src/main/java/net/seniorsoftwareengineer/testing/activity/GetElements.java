@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import net.seniorsoftwareengineer.testing.entitydom.SelectorCss;
 import net.seniorsoftwareengineer.testing.entitydom.TestCase;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
@@ -44,11 +45,11 @@ public class GetElements extends Activity implements ActivityAction, Serializabl
     }
 
     @JsonCreator
-    public GetElements(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
+    public GetElements(@JsonProperty("type") String type, @JsonProperty("selector") SelectorCss selector,
 	    @JsonProperty("childActivities") List<Activity> childActivities) {
-	super(element);
 	this.childActivities = childActivities;
 	this.type = type;
+	this.selector = selector;
     }
 
     @Override

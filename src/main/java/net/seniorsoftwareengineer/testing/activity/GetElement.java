@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.seniorsoftwareengineer.testing.entitydom.TestCase;
+import net.seniorsoftwareengineer.testing.entitydom.SelectorCss;
 
 /**
  * Action have to used if you want search in one DOM element. Useful for cascade
@@ -29,16 +29,16 @@ public class GetElement extends Activity implements ActivityAction, Serializable
     protected String type;
 
     @JsonCreator
-    public GetElement(@JsonProperty("elementHtml") TestCase element) {
-	super(element);
+    public GetElement(@JsonProperty("selector") SelectorCss selector) {
 	webElements = new ArrayList<WebElement>();
+	this.selector = selector;
     }
 
     @JsonCreator
-    public GetElement(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element) {
-	super(element);
+    public GetElement(@JsonProperty("type") String type, @JsonProperty("selector") SelectorCss selector) {
 	this.type = type;
 	webElements = new ArrayList<WebElement>();
+	this.selector = selector;
     }
 
     @Override

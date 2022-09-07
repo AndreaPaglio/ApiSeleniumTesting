@@ -16,15 +16,15 @@ If you use maven you should include
 
 After that can call API with
 
-    String serverTest = "http://54.73.104.25:8081/test";
-	String url = "https://www.eolo.it/home/casa/eolo/eolo-piu.html";
+    String serverTest = "http://localhost:8081/test";
+	String url = "https://www.google.com";
 	String driverVersion = "104.0.5112.20";
 	String browserVersion = "104.0.5112.79";
 	String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36.";
 	Configuration configuration = BuilderConfiguration.create().browserVersion(browserVersion).driverVersion(driverVersion).userAgent(userAgent).headless().getConfiguration();
 	Click click =  new Click();
-	click.getSelector().setCssSelector(".eolo-offerta-rectangle .btn.eolo-orange-button.js-aidTarget");
-	TestCase test = test = BuilderTestCase._create_().url(url).configuration(configuration).addActivity(click).getTestCase();
+	click.getSelector().setCssSelector("body");
+	TestCase test = test = BuilderTestCase.create().url(url).configuration(configuration).addActivity(click).getTestCase();
 	RestTemplate restTemplate = new RestTemplate();
 	HttpEntity<TestCase> request = new HttpEntity<TestCase>(test);
 	ResultTesting resultTesting = restTemplate.postForObject(serverTest, request, ResultTesting.class);

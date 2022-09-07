@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.TestPropertySource;
 
 import net.seniorsoftwareengineer.testing.activity.Click;
+import net.seniorsoftwareengineer.testing.builder.BuilderSelector;
 import net.seniorsoftwareengineer.testing.builder.BuilderTestCase;
 import net.seniorsoftwareengineer.testing.builder.ChromeTesting;
 import net.seniorsoftwareengineer.testing.config.TestProperty;
@@ -25,8 +26,7 @@ class FactoryTest {
     void test() throws Exception {
 	Configuration configuration = new Configuration();
 	configuration.setBrowserVersion(testProperty.getBrowserVersion());
-	Click click = new Click();
-	click.getSelector().setCssSelector("body");
+	Click click = new Click(BuilderSelector.create().cssSelector("body"));
 	assertThatExceptionOfType(TestingException.class).isThrownBy(() -> {
 	    BuilderTestCase.create().configuration(configuration).url("d").addActivity(click).addActivity(click)
 		    .execute();

@@ -2,7 +2,6 @@ package net.seniorsoftwareengineer.testing.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -20,7 +19,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import net.seniorsoftwareengineer.testing.entitydom.TestCase;
+import net.seniorsoftwareengineer.testing.entitydom.SelectorCss;
 import net.seniorsoftwareengineer.testing.exception.TestingException;
 
 /**
@@ -40,14 +39,21 @@ public class Click extends Activity implements ActivityAction, Serializable {
 
     @JsonCreator
     public Click() {
+	this.type = TypeActivity.CLICK.name();
 	this.parentId = new ArrayList<String>();
     }
 
+    @JsonCreator
+    public Click(@JsonProperty("selector") SelectorCss selector) {
+	this.type = TypeActivity.CLICK.name();
+	this.parentId = new ArrayList<String>();
+	this.selector = selector;
+    }
+
     @JsonCreator(mode = Mode.DEFAULT)
-    public Click(@JsonProperty("type") String type, @JsonProperty("elementHtml") TestCase element,
-	    @JsonProperty("info") List<TestCase> info) {
-	super(element);
+    public Click(@JsonProperty("type") String type, @JsonProperty("selector") SelectorCss selector) {
 	this.type = type;
+	this.selector = selector;
     }
 
     @Override

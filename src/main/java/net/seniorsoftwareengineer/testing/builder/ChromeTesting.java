@@ -207,7 +207,6 @@ public class ChromeTesting implements Test {
 	    activity.execute(driver);
 	    activity.takeSnapshot(ConstantsTesting.DIR_SNAPSHOT + "/" + id + "/" + activity.getIdx() + ".png");
 	}
-	;
     }
 
 }
